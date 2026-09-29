@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Przerwa techniczna</title>
+<style>
+  :root {
+    --bg: #12233a;
+    --ink: #e8eef5;
+    --muted: #9fb1c6;
+    --accent: #ffc93c;
+    --steel: #3a6ea5;
+    box-sizing: border-box;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+  main { width: 100%; max-width: 520px; text-align: center; }
+
+  .gears { width: min(320px, 80vw); height: auto; margin: 0 auto 8px; display: block; }
+  .g1 { transform-origin: 110px 110px; animation: spin 10s linear infinite; }
+  .g2 { transform-origin: 218px 176px; animation: spin 6.4s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  h1 {
+    font-size: clamp(2rem, 7vw, 3rem);
+    line-height: 1.1;
+    margin: 16px 0 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  p { margin: 0 auto; max-width: 42ch; color: var(--muted); font-size: 1.05rem; line-height: 1.55; }
+
+  .bar {
+    height: 6px;
+    width: min(320px, 80%);
+    margin: 32px auto 0;
+    background: rgba(255,255,255,.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar i {
+    display: block;
+    height: 100%;
+    width: 38%;
+    background: var(--accent);
+    border-radius: 3px;
+    animation: slide 1.8s ease-in-out infinite;
+  }
+  @keyframes slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(270%); }
+  }
+
+  .status { margin-top: 14px; font-size: .95rem; color: var(--ink); }
+  .status span::after {
+    content: "";
+    animation: dots 1.8s steps(4, end) infinite;
+  }
+  @keyframes dots {
+    0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; }
+  }
+
+  footer { margin-top: 40px; font-size: .9rem; color: var(--muted); }
+  footer a { color: var(--accent); text-underline-offset: 3px; }
+  footer a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .g1, .g2, .bar i, .status span::after { animation: none; }
+    .bar i { width: 60%; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <svg class="gears" viewBox="0 0 320 250" role="img" aria-label="Obracające się koła zębate">
+    <g class="g1"><path id="p1" fill="var(--accent)" fill-rule="evenodd"/></g>
+    <g class="g2"><path id="p2" fill="var(--steel)" fill-rule="evenodd"/></g>
+  </svg>
+
+  <h1>Przerwa techniczna</h1>
+  <p>Wprowadzamy usprawnienia, żeby serwis działał szybciej i stabilniej. Wrócimy za chwilę.</p>
+
+  <div class="bar" aria-hidden="true"><i></i></div>
+  <div class="status" role="status">Trwają prace<span></span></div>
+
+  <footer>Pilna sprawa? Napisz: <a href="mailto:rw2736923@gmail.com">rw2736923@gmail.com</a></footer>
+</main>
+
+<script>
+  // Buduje kształt koła zębatego (zęby + otwór na środku)
+  function gear(cx, cy, teeth, rOut, rIn, rHole) {
+    var pts = [], step = Math.PI * 2 / teeth;
+    for (var i = 0; i < teeth; i++) {
+      var a = i * step;
+      [[-0.30, rIn], [-0.16, rOut], [0.16, rOut], [0.30, rIn]].forEach(function (o) {
+        var t = a + o[0] * step * 1.6;
+        pts.push((cx + Math.cos(t) * o[1]).toFixed(1) + "," + (cy + Math.sin(t) * o[1]).toFixed(1));
+      });
+    }
+    var d = "M" + pts.join("L") + "Z";
+    d += "M" + (cx + rHole) + "," + cy + "a" + rHole + "," + rHole + " 0 1,0 " + (-2 * rHole) + ",0a" + rHole + "," + rHole + " 0 1,0 " + (2 * rHole) + ",0Z";
+    return d;
+  }
+  document.getElementById("p1").setAttribute("d", gear(110, 110, 12, 98, 80, 30));
+  // Mniejsze koło obrócone o pół zęba, by zęby się zazębiały
+  document.getElementById("p2").setAttribute("d", gear(218, 176, 8, 66, 50, 20));
+  document.querySelector(".g2").style.transform = "rotate(22deg)";
+</script>
+</body>
+</html>
