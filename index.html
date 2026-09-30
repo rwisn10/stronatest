@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mateusz Talar — Przerwa techniczna</title>
+<style>
+  :root{
+    --bg:#0a0c10;
+    --bg2:#111420;
+    --red:#ff2b43;
+    --blue:#2b8cff;
+    --ink:#f2f2ec;
+    --dim:#8891a3;
+    --line:rgba(242,242,236,0.12);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding: env(safe-area-inset-top,0px) 24px env(safe-area-inset-bottom,0px);
+    overflow:hidden;
+  }
+  .mono{ font-family:'SFMono-Regular','Consolas','Menlo',monospace; }
+
+  .mesh{
+    position:fixed; inset:0; z-index:-1;
+    background:
+      radial-gradient(600px circle at 20% 25%, rgba(255,43,67,0.2), transparent 60%),
+      radial-gradient(650px circle at 80% 75%, rgba(43,140,255,0.16), transparent 60%),
+      var(--bg);
+    animation:mesh-move 16s ease-in-out infinite alternate;
+  }
+  @keyframes mesh-move{
+    0%{ background-position:0% 0%, 100% 100%; }
+    100%{ background-position:10% 14%, 90% 86%; }
+  }
+  @media (prefers-reduced-motion:reduce){ .mesh{ animation:none; } }
+
+  .card{ max-width:560px; }
+
+  .tag-mono{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--red); margin-bottom:30px;
+  }
+  .tag-mono::before{
+    content:""; width:8px; height:8px; background:var(--red); border-radius:50%;
+    animation:blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:0.2; } }
+  @media (prefers-reduced-motion:reduce){ .tag-mono::before{ animation:none; } }
+
+  h1.title{
+    font-weight:900; text-transform:uppercase; letter-spacing:-0.02em;
+    font-size:clamp(2.2rem, 8vw, 3.6rem);
+    line-height:1.02;
+    margin:0 0 20px;
+    position:relative;
+  }
+  h1.title .glitch{ position:relative; display:inline-block; }
+  h1.title .glitch::before,
+  h1.title .glitch::after{
+    content:attr(data-text);
+    position:absolute; left:0; top:0; width:100%;
+    overflow:hidden; clip-path:inset(0 0 0 0);
+  }
+  h1.title .glitch::before{ color:var(--red); animation:glitch1 4.2s infinite steps(1); }
+  h1.title .glitch::after{ color:var(--blue); animation:glitch2 4.2s infinite steps(1); }
+  @keyframes glitch1{
+    0%,90%,100%{ clip-path:inset(0 0 0 0); transform:translate(0,0); opacity:0; }
+    91%{ clip-path:inset(10% 0 60% 0); transform:translate(-3px,0); opacity:0.85; }
+    94%{ clip-path:inset(60% 0 5% 0); transform:translate(3px,0); opacity:0.85; }
+    97%{ opacity:0; }
+  }
+  @keyframes glitch2{
+    0%,88%,100%{ clip-path:inset(0 0 0 0); transform:translate(0,0); opacity:0; }
+    89%{ clip-path:inset(70% 0 5% 0); transform:translate(3px,0); opacity:0.75; }
+    93%{ clip-path:inset(15% 0 55% 0); transform:translate(-3px,0); opacity:0.75; }
+    96%{ opacity:0; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    h1.title .glitch::before, h1.title .glitch::after{ animation:none; opacity:0; }
+  }
+
+  p.lead{ color:var(--dim); font-size:1.05rem; max-width:440px; margin:0 auto 40px; }
+
+  .bar-wrap{
+    height:6px; background:var(--bg2); border:1px solid var(--line);
+    max-width:360px; margin:0 auto 14px; overflow:hidden;
+  }
+  .bar-fill{
+    height:100%; width:30%;
+    background:linear-gradient(90deg, var(--red), var(--blue));
+    animation:bar-move 2.4s ease-in-out infinite;
+  }
+  @keyframes bar-move{
+    0%{ width:8%; margin-left:0%; }
+    50%{ width:55%; margin-left:20%; }
+    100%{ width:8%; margin-left:92%; }
+  }
+  @media (prefers-reduced-motion:reduce){ .bar-fill{ animation:none; width:60%; margin-left:0; } }
+
+  .bar-label{
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--dim); margin-bottom:40px;
+  }
+
+  .eta{
+    display:inline-flex; gap:14px; margin-bottom:36px;
+  }
+  .eta .unit{
+    background:var(--bg2); border:1px solid var(--line);
+    padding:14px 16px; min-width:66px;
+  }
+  .eta .num{ font-weight:900; font-size:1.5rem; line-height:1; }
+  .eta .cap{ font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); margin-top:6px; }
+
+  .contact{
+    display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    font-size:0.82rem; color:var(--dim);
+  }
+  .contact a{ color:var(--dim); text-decoration:none; border-bottom:1px solid transparent; transition:color 0.2s ease, border-color 0.2s ease; }
+  .contact a:hover{ color:var(--ink); border-color:var(--ink); }
+
+  .footnote{ margin-top:44px; font-size:0.74rem; color:#565d6c; }
+</style>
+</head>
+<body>
+
+<div class="mesh"></div>
+
+<div class="card">
+  <div class="tag-mono">trwa aktualizacja sztabu</div>
+  <h1 class="title"><span class="glitch" data-text="PRZERWA">PRZERWA</span><br>TECHNICZNA</h1>
+  <p class="lead">Strona kampanii Mateusza Talara wraca dziś o 15:00 — porządkujemy program i dodajemy nowe materiały.</p>
+
+  <div class="bar-wrap"><div class="bar-fill"></div></div>
+  <div class="bar-label mono">trwa aktualizacja…</div>
+
+  <div class="eta mono" id="eta">
+    <div class="unit"><div class="num" id="eta-h">02</div><div class="cap">godz</div></div>
+    <div class="unit"><div class="num" id="eta-m">00</div><div class="cap">min</div></div>
+    <div class="unit"><div class="num" id="eta-s">00</div><div class="cap">sek</div></div>
+  </div>
+
+  <div class="contact mono">
+    <a href="#">biuro@talar-kampania.pl</a>
+    <a href="#">media społecznościowe</a>
+  </div>
+
+  <div class="footnote mono">Mateusz Talar 2027 — kampania obywatelska</div>
+</div>
+
+<script>
+(function(){
+  var target = new Date();
+  target.setHours(15, 0, 0, 0);
+  if(target.getTime() < Date.now()){ target.setDate(target.getDate() + 1); }
+  target = target.getTime();
+  var hEl = document.getElementById('eta-h');
+  var mEl = document.getElementById('eta-m');
+  var sEl = document.getElementById('eta-s');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var diff = Math.max(0, target - Date.now());
+    var h = Math.floor(diff/3600000);
+    var m = Math.floor((diff%3600000)/60000);
+    var s = Math.floor((diff%60000)/1000);
+    hEl.textContent = pad(h);
+    mEl.textContent = pad(m);
+    sEl.textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
+</body>
+</html>
