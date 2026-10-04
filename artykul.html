@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Artykuł — Mateusz Talar</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"><link rel="icon" href="logo.png"><link rel="stylesheet" href="style.css"></head><body><div id="nav"></div><header class="page-head"><div class="wrap"><span class="pill" id="pc"></span><h1 id="pt" style="font-size:clamp(2rem,5vw,3.4rem)"></h1><p id="pm"></p></div></header>
+<section><div class="wrap" style="max-width:760px"><div id="body" style="font-size:1.12rem"></div><div id="nv" style="display:flex;justify-content:space-between;gap:16px;margin:50px 0;flex-wrap:wrap"></div></div></section><section style="padding-top:0"><div class="wrap"><span class="eyebrow">Czytaj też</span><div class="grid g3" id="rel" style="margin-top:20px"></div></div></section><div id="foot"></div><script src="script.js"></script><script src="articles-data.js"></script><script>
+const MON=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+function dateOf(i){const d=new Date(2026,9,4);d.setDate(d.getDate()-Math.floor(i*1.7));return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear()}
+function mins(a){return Math.max(1,Math.round((a.l+' '+a.b).split(' ').length/180))}
+</script><script>
+const id=+new URLSearchParams(location.search).get('id')||0,a=ARTICLES[id]||ARTICLES[0];
+document.title=a.t+' — Mateusz Talar';
+document.getElementById('pc').textContent=a.c;document.getElementById('pt').textContent=a.t;
+document.getElementById('pm').textContent=dateOf(a.id)+' · '+mins(a)+' min czytania';
+document.getElementById('body').innerHTML='<p style="font-weight:700;font-size:1.25rem;color:var(--ink)">'+a.l+'</p>'+a.b.split('\n\n').map(p=>'<p style="margin-top:18px">'+p+'</p>').join('');
+const pv=ARTICLES[a.id-1],nx=ARTICLES[a.id+1];
+document.getElementById('nv').innerHTML=(pv?`<a class="btn dark" href="artykul.html?id=${pv.id}">← Poprzedni</a>`:'<span></span>')+`<a class="btn line" style="color:var(--ink);border-color:var(--ink)" href="artykuly.html?c=${encodeURIComponent(a.c)}">Więcej: ${a.c}</a>`+(nx?`<a class="btn dark" href="artykul.html?id=${nx.id}">Następny →</a>`:'');
+document.getElementById('rel').innerHTML=ARTICLES.filter(x=>x.c===a.c&&x.id!==a.id).slice(0,3).map(x=>`<a href="artykul.html?id=${x.id}" class="card"><span class="tag">${x.c}</span><h3>${x.t}</h3><p>${x.l}</p></a>`).join('');
+</script></body></html>
