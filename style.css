@@ -88,3 +88,10 @@ footer a{display:block;padding:3px 0}footer a:hover{color:#e0b85a}
 .menu{display:none;position:absolute;top:84px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;border-bottom:1px solid var(--line);padding:10px}.menu.open{display:flex}.menu a.cta-s{margin:6px 0 0;text-align:center}
 footer .cols{grid-template-columns:1fr}section{padding:60px 0}.stat{border-right:0;border-bottom:1px solid var(--line)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* popierany przez */
+.support{display:inline-flex!important;align-items:center;gap:18px;margin-top:34px;padding:10px 22px 10px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);transition:.25s;color:var(--navy)}
+.support span{font-family:var(--ui);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.support img{height:68px;width:auto;display:block}
+.support:hover{box-shadow:0 14px 30px rgba(11,36,71,.18);transform:translateY(-3px)}
+footer .support{margin-top:18px}
