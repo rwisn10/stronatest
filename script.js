@@ -11,3 +11,7 @@ const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return
 document.querySelectorAll('[data-to]').forEach(el=>co.observe(el));
 const fb=document.querySelectorAll('.filters button');
 fb.forEach(b=>b.onclick=()=>{fb.forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('[data-cat]').forEach(c=>c.style.display=(b.dataset.f==='all'||c.dataset.cat===b.dataset.f)?'':'none')});
+
+const bar=document.createElement('div');bar.id='prog';document.body.prepend(bar);
+addEventListener('scroll',()=>{bar.style.width=(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)*100)+'%'});
+document.addEventListener('mousemove',e=>{document.querySelectorAll('.card,.stat').forEach(c=>{const r=c.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});const h=document.querySelector('.hero');if(h){h.style.setProperty('--px',((e.clientX/innerWidth-.5)*50)+'px');h.style.setProperty('--py',((e.clientY/innerHeight-.5)*50)+'px')}});
