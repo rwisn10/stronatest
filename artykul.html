@@ -8,7 +8,7 @@ const id=+new URLSearchParams(location.search).get('id')||0,a=ARTICLES[id]||ARTI
 document.title=a.t+' — Mateusz Talar';
 document.getElementById('pc').textContent=a.c;document.getElementById('pt').textContent=a.t;
 document.getElementById('pm').textContent=dateOf(a.id)+' · '+mins(a)+' min czytania';
-document.getElementById('body').innerHTML='<p style="font-weight:700;font-size:1.25rem;color:var(--ink)">'+a.l+'</p>'+a.b.split('\n\n').map(p=>'<p style="margin-top:18px">'+p+'</p>').join('');
+document.getElementById('body').innerHTML='<p style="">'+a.l+'</p>'+a.b.split('\n\n').map(p=>p.startsWith('## ')?'<h3>'+p.slice(3)+'</h3>':'<p style="margin-top:20px">'+p+'</p>').join('');
 const pv=ARTICLES[a.id-1],nx=ARTICLES[a.id+1];
 document.getElementById('nv').innerHTML=(pv?`<a class="btn dark" href="artykul.html?id=${pv.id}">← Poprzedni</a>`:'<span></span>')+`<a class="btn line" style="color:var(--ink);border-color:var(--ink)" href="artykuly.html?c=${encodeURIComponent(a.c)}">Więcej: ${a.c}</a>`+(nx?`<a class="btn dark" href="artykul.html?id=${nx.id}">Następny →</a>`:'');
 document.getElementById('rel').innerHTML=ARTICLES.filter(x=>x.c===a.c&&x.id!==a.id).slice(0,3).map(x=>`<a href="artykul.html?id=${x.id}" class="card"><span class="tag">${x.c}</span><h3>${x.t}</h3><p>${x.l}</p></a>`).join('');

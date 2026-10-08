@@ -4,14 +4,14 @@ const MON=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','g
 function dateOf(i){const d=new Date(2026,9,4);d.setDate(d.getDate()-Math.floor(i*1.7));return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear()}
 function mins(a){return Math.max(1,Math.round((a.l+' '+a.b).split(' ').length/180))}
 </script><script>
-let cat='all',page=1,q='';const PER=12,cats=['all',...new Set(ARTICLES.map(a=>a.c))];
+let cat='all',page=1,q='';const PER=12,cats=['all','long',...new Set(ARTICLES.map(a=>a.c))];
 const $=id=>document.getElementById(id);
-function draw(){const f=ARTICLES.filter(a=>(cat==='all'||a.c===cat)&&(a.t+a.l).toLowerCase().includes(q));const pages=Math.max(1,Math.ceil(f.length/PER));page=Math.min(page,pages);
+function draw(){const f=ARTICLES.slice().sort((x,y)=>(mins(y)>=4)-(mins(x)>=4)||x.id-y.id).filter(a=>(cat==='all'||(cat==='long'?mins(a)>=4:a.c===cat))&&(a.t+a.l).toLowerCase().includes(q));const pages=Math.max(1,Math.ceil(f.length/PER));page=Math.min(page,pages);
 $('count').textContent=f.length+' artykułów';
-$('list').innerHTML=f.slice((page-1)*PER,page*PER).map(a=>`<a href="artykul.html?id=${a.id}" class="card"><span class="tag">${a.c}</span><h3>${a.t}</h3><p>${a.l}</p><p style="font-size:.8rem;margin-top:10px">${dateOf(a.id)} · ${mins(a)} min czytania</p></a>`).join('')||'<p>Brak wyników.</p>';
+$('list').innerHTML=f.slice((page-1)*PER,page*PER).map(a=>`<a href="artykul.html?id=${a.id}" class="card"><span class="tag">${a.c}${mins(a)>=4?' · ok. '+mins(a)+' min czytania':''}</span><h3>${a.t}</h3><p>${a.l}</p><p style="font-size:.8rem;margin-top:10px">${dateOf(a.id)} · ${mins(a)} min czytania</p></a>`).join('')||'<p>Brak wyników.</p>';
 $('pager').innerHTML=pages>1?Array.from({length:pages},(_,i)=>`<button class="${i+1===page?'on':''}" data-p="${i+1}">${i+1}</button>`).join(''):'';
 $('pager').querySelectorAll('button').forEach(b=>b.onclick=()=>{page=+b.dataset.p;draw();scrollTo({top:300,behavior:'smooth'})})}
-$('cats').innerHTML=cats.map(c=>`<button data-c="${c}" class="${c==='all'?'on':''}">${c==='all'?'Wszystkie':c+' ('+ARTICLES.filter(a=>a.c===c).length+')'}</button>`).join('');
+$('cats').innerHTML=cats.map(c=>`<button data-c="${c}" class="${c==='all'?'on':''}">${c==='all'?'Wszystkie':c==='long'?'Długie, ok. 5 min ('+ARTICLES.filter(a=>mins(a)>=4).length+')':c+' ('+ARTICLES.filter(a=>a.c===c).length+')'}</button>`).join('');
 $('cats').querySelectorAll('button').forEach(b=>b.onclick=()=>{$('cats').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;page=1;draw()});
 $('q').oninput=e=>{q=e.target.value.toLowerCase();page=1;draw()};
 const pc=new URLSearchParams(location.search).get('c');if(pc){const b=[...$('cats').children].find(x=>x.dataset.c===pc);b&&b.click()}
